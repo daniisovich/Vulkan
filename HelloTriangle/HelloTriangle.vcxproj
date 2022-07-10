@@ -92,6 +92,7 @@
     <ClCompile Include="src\glfw\glfw_context.cpp" />
     <ClCompile Include="src\glfw\glfw_window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\vulkan\utility\imageview_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\instance_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\ldevice_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\swapchain_creation.cpp" />

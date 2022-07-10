@@ -15,7 +15,8 @@ Context::Context(const glfw::Window& window, const std::vector<const char*>& req
 	m_ldevice{ utility::createLDevice(m_pdevice, m_indices, req_device_extensions) },	
 	m_graphics_queue{ utility::createQueueHandle(m_ldevice, m_indices.graphics.value(), 0) },
 	m_present_queue{ utility::createQueueHandle(m_ldevice, m_indices.present.value(), 0) },
-	m_swapchain{ utility::createSwapchain(m_pdevice, m_indices, m_ldevice, m_surface, glfw_framebuffer_size) }
+	m_swapchain{ utility::createSwapchain(m_pdevice, m_indices, m_ldevice, m_surface, glfw_framebuffer_size) },
+	m_swapchain_image_views{ utility::createImageViews(m_ldevice, m_swapchain) }
 {
 
 }

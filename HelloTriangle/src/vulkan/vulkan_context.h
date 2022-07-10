@@ -25,4 +25,6 @@ private:
 	vk::raii::Queue						m_graphics_queue;
 	vk::raii::Queue						m_present_queue;
 	Swapchain							m_swapchain;
+	std::vector<vk::raii::ImageView>	m_swapchain_image_views;
+
 };

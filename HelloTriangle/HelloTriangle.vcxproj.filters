@@ -45,6 +45,9 @@
     <ClCompile Include="src\vulkan\utility\swapchain_creation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\vulkan\utility\imageview_creation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application.h">

@@ -32,6 +32,7 @@ namespace utility {
 	vk::raii::Device createLDevice(const vk::raii::PhysicalDevice& pdevice, const QueueFamilyIndices& indices, const std::vector<const char*>& req_extensions);
 	Swapchain createSwapchain(const vk::raii::PhysicalDevice& pdevice, const QueueFamilyIndices& indices, const vk::raii::Device& ldevice,
 											const vk::raii::SurfaceKHR& surface, const std::pair<uint32_t, uint32_t>& framebuffer_size);
+	std::vector<vk::raii::ImageView> createImageViews(const vk::raii::Device& device, const Swapchain& swapchain);
 
 	inline vk::raii::Queue createQueueHandle(const vk::raii::Device& device, uint32_t index, uint32_t offset = 0) {
 		return device.getQueue(index, offset);
