@@ -1,0 +1,52 @@
+#include "glfw_window.h"
+
+#include <stdexcept>
+
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+}
+
+namespace glfw {
+
+	Window::Window(uint32_t width, uint32_t height, std::string_view title)	{
+
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+		m_handle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
+		if (!m_handle)
+			throw std::runtime_error("Failed to create glfw window");
+
+		setCallbacks();
+
+	}
+
+	Window::~Window() {
+		glfwDestroyWindow(m_handle);
+	}
+
+	void Window::setCallbacks() {
+		glfwSetKeyCallback(m_handle, keyCallback);
+	}
+
+	std::pair<uint32_t, uint32_t> Window::framebufferSize() const {
+		int width, height;
+		glfwGetFramebufferSize(m_handle, &width, &height);
+		return { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
+	}
+
+	vk::raii::SurfaceKHR Window::createSurface(const vk::raii::Instance& instance) const {
+		
+		VkSurfaceKHR surface;
+		VkResult result{ glfwCreateWindowSurface(*instance, m_handle, nullptr, &surface) };
+		if (result != VK_SUCCESS)
+			throw std::runtime_error("Failed to create window surface");
+
+		return vk::raii::SurfaceKHR{ instance, surface };
+
+	}
+
+}
