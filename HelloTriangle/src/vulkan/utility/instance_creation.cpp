@@ -19,7 +19,7 @@ namespace utility {
 		vk::ApplicationInfo app_info{
 				.pApplicationName	= "Hello Triangle",
 				.applicationVersion = VK_MAKE_API_VERSION(0, 1, 0, 0),
-				.apiVersion			= VK_API_VERSION_1_3,
+				.apiVersion			= VK_API_VERSION_1_0,
 		};
 
 		std::unique_ptr<vk::DebugUtilsMessengerCreateInfoEXT> debug_create_info{ nullptr };

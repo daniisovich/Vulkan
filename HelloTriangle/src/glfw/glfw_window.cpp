@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "../vulkan/vulkan_context.h"
+
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -9,27 +11,25 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 }
 
+void resizeCallback(GLFWwindow* window, int width, int height) {
+	auto context{ reinterpret_cast<vulkan::Context*>(glfwGetWindowUserPointer(window)) };
+	context->resized(true);
+}
+
 namespace glfw {
 
 	Window::Window(uint32_t width, uint32_t height, std::string_view title)	{
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		m_handle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
 		if (!m_handle)
 			throw std::runtime_error("Failed to create glfw window");
 
-		setCallbacks();
-
 	}
 
 	Window::~Window() {
 		glfwDestroyWindow(m_handle);
-	}
-
-	void Window::setCallbacks() {
-		glfwSetKeyCallback(m_handle, keyCallback);
 	}
 
 	std::pair<uint32_t, uint32_t> Window::framebufferSize() const {
@@ -47,6 +47,12 @@ namespace glfw {
 
 		return vk::raii::SurfaceKHR{ instance, surface };
 
+	}
+
+	void Window::setCallbacks(vulkan::Context* context) {
+		glfwSetWindowUserPointer(m_handle, (void*)&context);
+		glfwSetKeyCallback(m_handle, keyCallback);
+		glfwSetFramebufferSizeCallback(m_handle, resizeCallback);
 	}
 
 }

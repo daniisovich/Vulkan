@@ -14,6 +14,6 @@ public:
 private:
 
 	glfw::Window m_window;
-	Context m_context;
+	vulkan::Context m_context;
 
 };

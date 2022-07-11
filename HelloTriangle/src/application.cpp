@@ -3,9 +3,9 @@
 
 Application::Application(uint32_t width, uint32_t height, std::string_view title) :
 	m_window{ width, height, title },
-	m_context{ m_window, {VK_KHR_SWAPCHAIN_EXTENSION_NAME }, m_window.framebufferSize() }
+	m_context{ m_window, {VK_KHR_SWAPCHAIN_EXTENSION_NAME } }
 {
-
+	m_window.setCallbacks(&m_context);
 }
 
 void Application::run() {

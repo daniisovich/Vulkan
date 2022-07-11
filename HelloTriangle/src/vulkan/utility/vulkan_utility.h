@@ -5,6 +5,7 @@
 #define VULKAN_HPP_NO_CONSTRUCTORS
 #include <vulkan/vulkan_raii.hpp>
 
+
 struct QueueFamilyIndices {
 	std::optional<uint32_t> graphics;
 	std::optional<uint32_t> present;
@@ -33,6 +34,7 @@ struct ShaderInfo {
 
 
 namespace utility {
+
 
 	vk::raii::Instance createInstance(const vk::raii::Context& context);
 	vk::raii::PhysicalDevice createPDevice(const vk::raii::Instance& instance, const vk::raii::SurfaceKHR& surface, const std::vector<const char*>& req_extensions);

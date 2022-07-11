@@ -6,6 +6,9 @@
 #include <vulkan/vulkan_raii.hpp>
 
 #include "glfw_context.h"
+namespace vulkan {
+	class Context;
+}
 
 
 
@@ -25,12 +28,12 @@ namespace glfw {
 		std::pair<uint32_t, uint32_t> framebufferSize() const;
 		vk::raii::SurfaceKHR createSurface(const vk::raii::Instance& instance) const;
 
+		void setCallbacks(vulkan::Context* context);
+
 		inline bool shouldClose() const { return glfwWindowShouldClose(m_handle); }
 		inline void pollEvents() const { return glfwPollEvents(); }
 
 	private:
-
-		void setCallbacks();
 
 		GLFWwindow* m_handle;
 
