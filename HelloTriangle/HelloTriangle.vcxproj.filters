@@ -48,6 +48,18 @@
     <ClCompile Include="src\vulkan\utility\imageview_creation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\vulkan\utility\pipeline_creation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vulkan\utility\renderpass_creation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vulkan\utility\framebuffer_creation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vulkan\utility\commandqueue_creation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application.h">
@@ -68,5 +80,12 @@
     <ClInclude Include="src\vulkan\utility\vulkan_utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\vulkan\shaders\glsl\shader.vert" />
+    <None Include="src\vulkan\shaders\glsl\shader.frag" />
+    <None Include="src\vulkan\shaders\compile.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

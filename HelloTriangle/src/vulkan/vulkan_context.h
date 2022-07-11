@@ -26,5 +26,10 @@ private:
 	vk::raii::Queue						m_present_queue;
 	Swapchain							m_swapchain;
 	std::vector<vk::raii::ImageView>	m_swapchain_image_views;
+	vk::raii::RenderPass				m_renderpass;
+	vk::raii::Pipeline					m_graphics_pipeline;
+	std::vector<vk::raii::Framebuffer>	m_framebuffers;
+	vk::raii::CommandPool				m_command_pool;
+	vk::raii::CommandBuffer				m_command_buffer;
 
 };

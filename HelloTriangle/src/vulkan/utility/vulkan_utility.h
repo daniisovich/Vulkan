@@ -25,6 +25,13 @@ struct Swapchain {
 	std::vector<vk::Image> images;
 };
 
+struct ShaderInfo {
+	std::string_view filename;
+	vk::ShaderStageFlagBits stage;
+	std::string_view entry_point;
+};
+
+
 namespace utility {
 
 	vk::raii::Instance createInstance(const vk::raii::Context& context);
@@ -33,6 +40,15 @@ namespace utility {
 	Swapchain createSwapchain(const vk::raii::PhysicalDevice& pdevice, const QueueFamilyIndices& indices, const vk::raii::Device& ldevice,
 											const vk::raii::SurfaceKHR& surface, const std::pair<uint32_t, uint32_t>& framebuffer_size);
 	std::vector<vk::raii::ImageView> createImageViews(const vk::raii::Device& device, const Swapchain& swapchain);
+	vk::raii::RenderPass createRenderpass(const Swapchain& swapchain, const vk::raii::Device& device);
+	vk::raii::Pipeline createGraphicsPipeline(const std::vector<ShaderInfo>& shaders, const std::vector<vk::DynamicState>& dynamic_states,
+		const vk::raii::Device& device, const Swapchain& swapchain, const vk::raii::RenderPass& renderpass);
+	std::vector<vk::raii::Framebuffer> createFramebuffers(const vk::raii::Device& device, const Swapchain& swapchain, const std::vector<vk::raii::ImageView>& image_views,
+		const vk::raii::RenderPass& renderpass);
+	vk::raii::CommandPool createCommandPool(const vk::raii::Device& device, const QueueFamilyIndices& indices);
+	vk::raii::CommandBuffer createCommandBuffer(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool);
+	void recordCommandBuffer(const vk::raii::CommandBuffer& command_buffer, uint32_t image_index, const vk::raii::RenderPass& renderpass,
+		const std::vector<vk::raii::Framebuffer>& framebuffers, const Swapchain& swapchain, const vk::raii::Pipeline& graphics_pipeline);
 
 	inline vk::raii::Queue createQueueHandle(const vk::raii::Device& device, uint32_t index, uint32_t offset = 0) {
 		return device.getQueue(index, offset);

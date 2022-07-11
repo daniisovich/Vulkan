@@ -92,9 +92,13 @@
     <ClCompile Include="src\glfw\glfw_context.cpp" />
     <ClCompile Include="src\glfw\glfw_window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\vulkan\utility\commandqueue_creation.cpp" />
+    <ClCompile Include="src\vulkan\utility\framebuffer_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\imageview_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\instance_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\ldevice_creation.cpp" />
+    <ClCompile Include="src\vulkan\utility\pipeline_creation.cpp" />
+    <ClCompile Include="src\vulkan\utility\renderpass_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\swapchain_creation.cpp" />
     <ClCompile Include="src\vulkan\vulkan_context.cpp" />
     <ClCompile Include="src\vulkan\debug\vulkan_debug.cpp" />
@@ -107,6 +111,11 @@
     <ClInclude Include="src\vulkan\vulkan_context.h" />
     <ClInclude Include="src\vulkan\debug\vulkan_debug.h" />
     <ClInclude Include="src\vulkan\utility\vulkan_utility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\vulkan\shaders\compile.bat" />
+    <None Include="src\vulkan\shaders\glsl\shader.frag" />
+    <None Include="src\vulkan\shaders\glsl\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
