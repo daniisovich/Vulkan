@@ -1,5 +1,6 @@
 #include "vulkan_context.h"
 
+#include <iostream>
 #include "debug/vulkan_debug.h"
 
 
@@ -23,44 +24,44 @@ Context::Context(const glfw::Window& window, const std::vector<const char*>& req
 														 { vk::DynamicState::eViewport, vk::DynamicState::eScissor }, m_ldevice, m_swapchain, m_renderpass) },
 	m_framebuffers{ utility::createFramebuffers(m_ldevice, m_swapchain, m_swapchain_image_views, m_renderpass) },
 	m_command_pool{ utility::createCommandPool(m_ldevice, m_indices) },
-	m_command_buffer{ utility::createCommandBuffer(m_ldevice, m_command_pool) },
-	m_image_available{ utility::createSemaphore(m_ldevice) },
-	m_render_finished{ utility::createSemaphore(m_ldevice) },
-	m_in_flight{ utility::createFence(m_ldevice) }
+	m_command_buffers{ utility::createCommandBuffers(m_ldevice, m_command_pool, m_max_concurrent_frames) },
+	m_images_available{ utility::createSemaphores(m_ldevice, m_max_concurrent_frames) },
+	m_renders_finished{ utility::createSemaphores(m_ldevice, m_max_concurrent_frames) },
+	m_concurrent_frames{ utility::createFences(m_ldevice, m_max_concurrent_frames) }
 {
 
 }
 
 void Context::draw() {
 
-	vk::Result result{ m_ldevice.waitForFences(*m_in_flight, VK_TRUE, std::numeric_limits<uint64_t>::max()) };
-	m_ldevice.resetFences(*m_in_flight);
+	vk::Result result{ m_ldevice.waitForFences(*m_concurrent_frames[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max())};
+	m_ldevice.resetFences(*m_concurrent_frames[current_frame]);
 	
 	const vk::AcquireNextImageInfoKHR next_image_info{
 			.swapchain	= *m_swapchain.handle,
 			.timeout	= std::numeric_limits<uint64_t>::max(),
-			.semaphore	= *m_image_available,
+			.semaphore	= *m_images_available[current_frame],
 			.fence		= nullptr,
 			.deviceMask = 1,
 	};
 	auto [_, image_index] = m_ldevice.acquireNextImage2KHR(next_image_info);
 
-	m_command_buffer.reset();
-	recordCommandBuffer(image_index);
+	m_command_buffers[current_frame].reset();
+	recordCommandBuffer(m_command_buffers[current_frame], image_index);
 
 	vk::PipelineStageFlags wait_stages{	vk::PipelineStageFlagBits::eColorAttachmentOutput };
 	vk::SubmitInfo submit_info{
 			.waitSemaphoreCount		= 1,
-			.pWaitSemaphores		= &(*m_image_available),
+			.pWaitSemaphores		= &(*m_images_available[current_frame]),
 			.pWaitDstStageMask		= &wait_stages,
 			.commandBufferCount		= 1,
-			.pCommandBuffers		= &(*m_command_buffer),
+			.pCommandBuffers		= &(*m_command_buffers[current_frame]),
 			.signalSemaphoreCount	= 1,
-			.pSignalSemaphores		= &(*m_render_finished),
+			.pSignalSemaphores		= &(*m_renders_finished[current_frame]),
 	};
 
 	try {
-		m_graphics_queue.submit(submit_info, *m_in_flight);
+		m_graphics_queue.submit(submit_info, *m_concurrent_frames[current_frame]);
 	}
 	catch (const vk::SystemError& err) {
 		std::cout << err.what() << std::endl;
@@ -68,7 +69,7 @@ void Context::draw() {
 
 	vk::PresentInfoKHR present_info{
 			.waitSemaphoreCount = 1,
-			.pWaitSemaphores = &(*m_render_finished),
+			.pWaitSemaphores = &(*m_renders_finished[current_frame]),
 			.swapchainCount = 1,
 			.pSwapchains = &(*m_swapchain.handle),
 			.pImageIndices = &image_index,
@@ -81,14 +82,16 @@ void Context::draw() {
 		std::cout << err.what() << std::endl;
 	}
 
+	current_frame = (current_frame + 1) % m_max_concurrent_frames;
+
 }
 
-void Context::recordCommandBuffer(uint32_t image_index) {
+void Context::recordCommandBuffer(const vk::raii::CommandBuffer& command_buffer, uint32_t image_index) {
 
 	const vk::CommandBufferBeginInfo begin_info{};
 
 	try {
-		m_command_buffer.begin(begin_info);
+		command_buffer.begin(begin_info);
 	}
 	catch (const vk::SystemError& err) {
 		std::cout << err.what() << std::endl;
@@ -108,8 +111,8 @@ void Context::recordCommandBuffer(uint32_t image_index) {
 			.pClearValues = &clear_color,
 	};
 
-	m_command_buffer.beginRenderPass(renderpass_info, vk::SubpassContents::eInline);
-	m_command_buffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *m_graphics_pipeline);
+	command_buffer.beginRenderPass(renderpass_info, vk::SubpassContents::eInline);
+	command_buffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *m_graphics_pipeline);
 
 	const vk::Viewport viewport{
 			.x = 0.0f,
@@ -119,20 +122,20 @@ void Context::recordCommandBuffer(uint32_t image_index) {
 			.minDepth = 0.0f,
 			.maxDepth = 1.0f,
 	};
-	m_command_buffer.setViewport(0, viewport);
+	command_buffer.setViewport(0, viewport);
 
 	const vk::Rect2D scissor{
 			.offset = {0, 0},
 			.extent = m_swapchain.extent,
 	};
-	m_command_buffer.setScissor(0, scissor);
+	command_buffer.setScissor(0, scissor);
 
-	m_command_buffer.draw(3, 1, 0, 0);
+	command_buffer.draw(3, 1, 0, 0);
 
-	m_command_buffer.endRenderPass();
+	command_buffer.endRenderPass();
 
 	try {
-		m_command_buffer.end();
+		command_buffer.end();
 	}
 	catch (const vk::SystemError& err) {
 		std::cout << err.what() << std::endl;

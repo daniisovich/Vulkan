@@ -22,21 +22,20 @@ namespace utility {
 
 	}
 
-	vk::raii::CommandBuffer createCommandBuffer(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool) {
+	std::vector<vk::raii::CommandBuffer> createCommandBuffers(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool, uint32_t count) {
 
 		const vk::CommandBufferAllocateInfo alloc_info{
 				.commandPool		= *command_pool,
 				.level				= vk::CommandBufferLevel::ePrimary,
-				.commandBufferCount = 1,
+				.commandBufferCount = count,
 		};
 
 		try {
-			auto command_buffer{ device.allocateCommandBuffers(alloc_info) };
-			return std::move(command_buffer[0]);
+			return device.allocateCommandBuffers(alloc_info);
 		}
 		catch (const vk::SystemError& err) {
 			std::cout << err.what() << std::endl;
-			return nullptr;
+			return {};
 		}
 
 	}

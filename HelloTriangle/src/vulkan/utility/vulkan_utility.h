@@ -46,9 +46,9 @@ namespace utility {
 	std::vector<vk::raii::Framebuffer> createFramebuffers(const vk::raii::Device& device, const Swapchain& swapchain, const std::vector<vk::raii::ImageView>& image_views,
 		const vk::raii::RenderPass& renderpass);
 	vk::raii::CommandPool createCommandPool(const vk::raii::Device& device, const QueueFamilyIndices& indices);
-	vk::raii::CommandBuffer createCommandBuffer(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool);
-	vk::raii::Semaphore createSemaphore(const vk::raii::Device& device);
-	vk::raii::Fence createFence(const vk::raii::Device& device);
+	std::vector<vk::raii::CommandBuffer> createCommandBuffers(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool, uint32_t count);
+	std::vector<vk::raii::Semaphore> createSemaphores(const vk::raii::Device& device, uint32_t count);
+	std::vector<vk::raii::Fence> createFences(const vk::raii::Device& device, uint32_t count);
 
 	inline vk::raii::Queue createQueueHandle(const vk::raii::Device& device, uint32_t index, uint32_t offset = 0) {
 		return device.getQueue(index, offset);
