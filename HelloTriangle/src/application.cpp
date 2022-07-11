@@ -11,10 +11,9 @@ Application::Application(uint32_t width, uint32_t height, std::string_view title
 void Application::run() {
 
 	while (!m_window.shouldClose()) {
-
-
 		m_window.pollEvents();
-
+		m_context.draw();
 	}
+	m_context.wait();
 
 }

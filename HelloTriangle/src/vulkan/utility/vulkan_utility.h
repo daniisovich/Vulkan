@@ -19,7 +19,7 @@ struct SwapchainSupportDetails {
 };
 
 struct Swapchain {
-	vk::raii::SwapchainKHR m_handle;
+	vk::raii::SwapchainKHR handle;
 	vk::Format format;
 	vk::Extent2D extent;
 	std::vector<vk::Image> images;
@@ -47,8 +47,8 @@ namespace utility {
 		const vk::raii::RenderPass& renderpass);
 	vk::raii::CommandPool createCommandPool(const vk::raii::Device& device, const QueueFamilyIndices& indices);
 	vk::raii::CommandBuffer createCommandBuffer(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool);
-	void recordCommandBuffer(const vk::raii::CommandBuffer& command_buffer, uint32_t image_index, const vk::raii::RenderPass& renderpass,
-		const std::vector<vk::raii::Framebuffer>& framebuffers, const Swapchain& swapchain, const vk::raii::Pipeline& graphics_pipeline);
+	vk::raii::Semaphore createSemaphore(const vk::raii::Device& device);
+	vk::raii::Fence createFence(const vk::raii::Device& device);
 
 	inline vk::raii::Queue createQueueHandle(const vk::raii::Device& device, uint32_t index, uint32_t offset = 0) {
 		return device.getQueue(index, offset);

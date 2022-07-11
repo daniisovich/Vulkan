@@ -100,6 +100,7 @@
     <ClCompile Include="src\vulkan\utility\pipeline_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\renderpass_creation.cpp" />
     <ClCompile Include="src\vulkan\utility\swapchain_creation.cpp" />
+    <ClCompile Include="src\vulkan\utility\sync_objects_creation.cpp" />
     <ClCompile Include="src\vulkan\vulkan_context.cpp" />
     <ClCompile Include="src\vulkan\debug\vulkan_debug.cpp" />
     <ClCompile Include="src\vulkan\utility\pdevice_selection.cpp" />

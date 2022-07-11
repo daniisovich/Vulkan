@@ -13,6 +13,10 @@ public:
 
 	Context(const glfw::Window& window, const std::vector<const char*>& req_device_extensions, const std::pair<uint32_t, uint32_t>& glfw_framebuffer_size);
 
+	void draw();
+	void recordCommandBuffer(uint32_t image_index);
+	void wait() const;
+
 private:
 
 	vk::raii::Context					m_context;
@@ -31,5 +35,9 @@ private:
 	std::vector<vk::raii::Framebuffer>	m_framebuffers;
 	vk::raii::CommandPool				m_command_pool;
 	vk::raii::CommandBuffer				m_command_buffer;
+
+	vk::raii::Semaphore					m_image_available;
+	vk::raii::Semaphore					m_render_finished;
+	vk::raii::Fence						m_in_flight;
 
 };

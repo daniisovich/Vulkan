@@ -29,12 +29,23 @@ namespace utility {
 				.pColorAttachments		= &color_attachment_ref,
 		};
 
+		const vk::SubpassDependency dependency{
+				.srcSubpass		= VK_SUBPASS_EXTERNAL,
+				.dstSubpass		= 0,
+				.srcStageMask	= vk::PipelineStageFlagBits::eColorAttachmentOutput,
+				.dstStageMask	= vk::PipelineStageFlagBits::eColorAttachmentOutput,
+				.srcAccessMask	= vk::AccessFlagBits::eNone,
+				.dstAccessMask	= vk::AccessFlagBits::eColorAttachmentWrite,
+		};
+
 		const vk::RenderPassCreateInfo create_info{
 				.attachmentCount	= 1,
 				.pAttachments		= &color_attachment,
 				.subpassCount		= 1,
 				.pSubpasses			= &subpass,
-		};
+				.dependencyCount	= 1,
+				.pDependencies		= &dependency,
+		};		
 
 		try {
 			return device.createRenderPass(create_info);
