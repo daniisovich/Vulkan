@@ -26,6 +26,8 @@ namespace vulkan {
 															  { "src/vulkan/shaders/spir-v/frag.spv", vk::ShaderStageFlagBits::eFragment, "main" }},
 															 { vk::DynamicState::eViewport, vk::DynamicState::eScissor }, m_ldevice, m_swapchain, m_renderpass) },
 		m_framebuffers{ utility::createFramebuffers(m_ldevice, m_swapchain, m_swapchain_image_views, m_renderpass) },
+		m_vertex_buffer{ utility::createVertexBuffer(m_ldevice, m_vertices) },
+		m_vertex_buffer_memory{ utility::allocateVertexBufferMemory(m_ldevice, m_pdevice, m_vertex_buffer, m_vertices) },
 		m_command_pool{ utility::createCommandPool(m_ldevice, m_indices) },
 		m_command_buffers{ utility::createCommandBuffers(m_ldevice, m_command_pool, m_max_concurrent_frames) },
 		m_images_available{ utility::createSemaphores(m_ldevice, m_max_concurrent_frames) },
@@ -40,10 +42,10 @@ namespace vulkan {
 		vk::Result result{ m_ldevice.waitForFences(*m_concurrent_frames[m_current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max()) };
 
 		const vk::AcquireNextImageInfoKHR next_image_info{
-				.swapchain = *m_swapchain.handle,
-				.timeout = std::numeric_limits<uint64_t>::max(),
-				.semaphore = *m_images_available[m_current_frame],
-				.fence = nullptr,
+				.swapchain	= *m_swapchain.handle,
+				.timeout	= std::numeric_limits<uint64_t>::max(),
+				.semaphore	= *m_images_available[m_current_frame],
+				.fence		= nullptr,
 				.deviceMask = 1,
 		};
 
@@ -67,13 +69,13 @@ namespace vulkan {
 
 		vk::PipelineStageFlags wait_stages{ vk::PipelineStageFlagBits::eColorAttachmentOutput };
 		vk::SubmitInfo submit_info{
-				.waitSemaphoreCount = 1,
-				.pWaitSemaphores = &(*m_images_available[m_current_frame]),
-				.pWaitDstStageMask = &wait_stages,
-				.commandBufferCount = 1,
-				.pCommandBuffers = &(*m_command_buffers[m_current_frame]),
-				.signalSemaphoreCount = 1,
-				.pSignalSemaphores = &(*m_renders_finished[m_current_frame]),
+				.waitSemaphoreCount		= 1,
+				.pWaitSemaphores		= &(*m_images_available[m_current_frame]),
+				.pWaitDstStageMask		= &wait_stages,
+				.commandBufferCount		= 1,
+				.pCommandBuffers		= &(*m_command_buffers[m_current_frame]),
+				.signalSemaphoreCount	= 1,
+				.pSignalSemaphores		= &(*m_renders_finished[m_current_frame]),
 		};
 
 		try {
@@ -85,10 +87,10 @@ namespace vulkan {
 
 		vk::PresentInfoKHR present_info{
 				.waitSemaphoreCount = 1,
-				.pWaitSemaphores = &(*m_renders_finished[m_current_frame]),
-				.swapchainCount = 1,
-				.pSwapchains = &(*m_swapchain.handle),
-				.pImageIndices = &image_index,
+				.pWaitSemaphores	= &(*m_renders_finished[m_current_frame]),
+				.swapchainCount		= 1,
+				.pSwapchains		= &(*m_swapchain.handle),
+				.pImageIndices		= &image_index,
 		};
 
 
@@ -129,23 +131,23 @@ namespace vulkan {
 		const vk::ClearValue clear_color{ std::array<float, 4>{0.0f, 0.0f, 0.0f, 1.0f} };
 
 		const vk::RenderPassBeginInfo renderpass_info{
-				.renderPass = *m_renderpass,
-				.framebuffer = *m_framebuffers[image_index],
-				.renderArea = render_area,
-				.clearValueCount = 1,
-				.pClearValues = &clear_color,
+				.renderPass			= *m_renderpass,
+				.framebuffer		= *m_framebuffers[image_index],
+				.renderArea			= render_area,
+				.clearValueCount	= 1,
+				.pClearValues		= &clear_color,
 		};
 
 		command_buffer.beginRenderPass(renderpass_info, vk::SubpassContents::eInline);
 		command_buffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *m_graphics_pipeline);
 
 		const vk::Viewport viewport{
-				.x = 0.0f,
-				.y = 0.0f,
-				.width = static_cast<float>(m_swapchain.extent.width),
-				.height = static_cast<float>(m_swapchain.extent.height),
-				.minDepth = 0.0f,
-				.maxDepth = 1.0f,
+				.x			= 0.0f,
+				.y			= 0.0f,
+				.width		= static_cast<float>(m_swapchain.extent.width),
+				.height		= static_cast<float>(m_swapchain.extent.height),
+				.minDepth	= 0.0f,
+				.maxDepth	= 1.0f,
 		};
 		command_buffer.setViewport(0, viewport);
 
@@ -155,7 +157,9 @@ namespace vulkan {
 		};
 		command_buffer.setScissor(0, scissor);
 
-		command_buffer.draw(3, 1, 0, 0);
+		vk::Buffer vertex_buffers{ *m_vertex_buffer };
+		command_buffer.bindVertexBuffers(0, vertex_buffers, { 0 });
+		command_buffer.draw(static_cast<uint32_t>(m_vertices.size()), 1, 0, 0);
 
 		command_buffer.endRenderPass();
 

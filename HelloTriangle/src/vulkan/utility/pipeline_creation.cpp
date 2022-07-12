@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 
+#include "../vulkan_context.h"
+
+
 
 std::vector<uint8_t> readFile(std::string_view filename);
 vk::raii::ShaderModule createShaderModule(const std::vector<uint8_t>& code, const vk::raii::Device& device);
@@ -30,11 +33,13 @@ namespace utility {
 				});
 		}
 
+		auto binding_description{ Vertex::bindingDescription() };
+		auto attribute_descriptions{ Vertex::attributeDescriptions() };
 		vk::PipelineVertexInputStateCreateInfo vertex_input_info{
-				.vertexBindingDescriptionCount		= 0,
-				.pVertexBindingDescriptions			= nullptr,
-				.vertexAttributeDescriptionCount	= 0,
-				.pVertexAttributeDescriptions		= nullptr,
+				.vertexBindingDescriptionCount		= 1,
+				.pVertexBindingDescriptions			= &binding_description,
+				.vertexAttributeDescriptionCount	= static_cast<uint32_t>(attribute_descriptions.size()),
+				.pVertexAttributeDescriptions		= attribute_descriptions.data(),
 		};
 
 		vk::PipelineInputAssemblyStateCreateInfo input_assembly{

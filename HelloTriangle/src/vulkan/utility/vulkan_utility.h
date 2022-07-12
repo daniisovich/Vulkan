@@ -32,6 +32,8 @@ struct ShaderInfo {
 	std::string_view entry_point;
 };
 
+struct Vertex;
+
 
 namespace utility {
 
@@ -48,6 +50,9 @@ namespace utility {
 	std::vector<vk::raii::Framebuffer> createFramebuffers(const vk::raii::Device& device, const Swapchain& swapchain, const std::vector<vk::raii::ImageView>& image_views,
 		const vk::raii::RenderPass& renderpass);
 	vk::raii::CommandPool createCommandPool(const vk::raii::Device& device, const QueueFamilyIndices& indices);
+	vk::raii::Buffer createVertexBuffer(const vk::raii::Device& log_device, const std::vector<Vertex>& vertices);
+	vk::raii::DeviceMemory allocateVertexBufferMemory(const vk::raii::Device& log_device, const vk::raii::PhysicalDevice& phys_device,
+													  const vk::raii::Buffer& vertex_buffer, const std::vector<Vertex>& vertices);
 	std::vector<vk::raii::CommandBuffer> createCommandBuffers(const vk::raii::Device& device, const vk::raii::CommandPool& command_pool, uint32_t count);
 	std::vector<vk::raii::Semaphore> createSemaphores(const vk::raii::Device& device, uint32_t count);
 	std::vector<vk::raii::Fence> createFences(const vk::raii::Device& device, uint32_t count);
