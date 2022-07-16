@@ -2,7 +2,7 @@
 .vs/
 bin/
 bin-int/
-HelloTriangle/vendor/
+Raytracer/vendor/
 
 # files
 *.user
