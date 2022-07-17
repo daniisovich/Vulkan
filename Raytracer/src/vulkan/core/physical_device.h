@@ -10,7 +10,7 @@ struct QueueIndices {
 	std::optional<uint32_t> graphics;
 	std::optional<uint32_t> present;
 
-	bool complete() const { return graphics.has_value() && present.has_value(); }
+	inline bool complete() const { return graphics.has_value() && present.has_value(); }
 };
 
 struct SwapchainSupport {
@@ -35,6 +35,7 @@ namespace vulkan {
 		inline const vk::raii::PhysicalDevice& operator*() const { return m_handle; }
 		inline QueueIndices indices() const { return m_indices; }
 		inline std::vector<const char*> extensions() const { return m_extensions; }
+		inline SwapchainSupport swapchainSupport() const { return m_swapchain_support; }
 
 	private:
 

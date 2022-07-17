@@ -21,9 +21,10 @@ namespace glfw {
 		Window& operator=(const Window&) = delete;
 
 		vk::raii::SurfaceKHR createSurface(const vk::raii::Instance& instance);
+		std::pair<uint32_t, uint32_t> framebufferSize() const;
 
 		inline bool open() const { return !glfwWindowShouldClose(m_handle); }
-		inline void pollEvents() const { glfwPollEvents(); }
+		inline void update() const { glfwPollEvents(); }
 
 	private:
 

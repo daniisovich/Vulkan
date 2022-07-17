@@ -24,10 +24,15 @@ namespace vulkan {
 	}
 
 	Queues Device::createQueues() const {
-		return Queues{
-				.graphics = m_logical_device.getQueue(m_physical_device.indices().graphics.value(), 0),
-				.present  = m_logical_device.getQueue(m_physical_device.indices().present.value(), 0),
-		};
+		try {
+			return Queues{
+					.graphics = m_logical_device.getQueue(m_physical_device.indices().graphics.value(), 0),
+					.present = m_logical_device.getQueue(m_physical_device.indices().present.value(), 0),
+			};
+		}
+		catch (const vk::SystemError& err) {
+			throw std::runtime_error("Failed to retrieve queues from logical device\n\t" + std::string(err.what()));
+		}
 	}
 
 }

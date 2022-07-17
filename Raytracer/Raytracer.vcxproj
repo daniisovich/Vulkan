@@ -166,6 +166,8 @@
     <ClCompile Include="src\vulkan\core\device.cpp" />
     <ClCompile Include="src\vulkan\core\instance.cpp" />
     <ClCompile Include="src\vulkan\core\physical_device.cpp" />
+    <ClCompile Include="src\vulkan\core\pipeline.cpp" />
+    <ClCompile Include="src\vulkan\core\swapchain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application.h" />
@@ -175,6 +177,13 @@
     <ClInclude Include="src\vulkan\core\device.h" />
     <ClInclude Include="src\vulkan\core\instance.h" />
     <ClInclude Include="src\vulkan\core\physical_device.h" />
+    <ClInclude Include="src\vulkan\core\pipeline.h" />
+    <ClInclude Include="src\vulkan\core\swapchain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\vulkan\shaders\compile.bat" />
+    <None Include="src\vulkan\shaders\glsl\shader.frag" />
+    <None Include="src\vulkan\shaders\glsl\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

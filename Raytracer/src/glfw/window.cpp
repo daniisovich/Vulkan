@@ -38,6 +38,12 @@ namespace glfw {
 	
 	}
 
+	std::pair<uint32_t, uint32_t> Window::framebufferSize() const {
+		int width{ 0 }, height{ 0 };
+		glfwGetFramebufferSize(m_handle, &width, &height);
+		return { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
+	}
+
 	void Window::setCallbacks() {
 		glfwSetKeyCallback(m_handle, keyCallback);
 	}

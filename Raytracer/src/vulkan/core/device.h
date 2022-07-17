@@ -25,12 +25,18 @@ namespace vulkan {
 		Device(const Device&) = delete;
 		Device& operator=(const Device&) = delete;
 
+		const vk::raii::Device& operator*() const { return m_logical_device; }
+
 		Queues createQueues() const;
+
+		inline QueueIndices indices() const { return m_physical_device.indices(); }
+		inline SwapchainSupport swapchainSupport() const { return m_physical_device.swapchainSupport(); }
 
 	private:
 
 		PhysicalDevice   m_physical_device;
 		vk::raii::Device m_logical_device;
+
 	};
 
 }

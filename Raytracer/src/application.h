@@ -3,6 +3,8 @@
 #include "glfw/window.h"
 #include "vulkan/core/instance.h"
 #include "vulkan/core/device.h"
+#include "vulkan/core/swapchain.h"
+#include "vulkan/core/pipeline.h"
 
 
 class Application {
@@ -22,7 +24,17 @@ private:
 		VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 		VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME,
 		VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
-		VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
+		VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+	};
+	const uint32_t m_image_count{ 3 };
+
+	const std::vector<ShaderInfo> m_shaders{
+		{ "src/vulkan/shaders/spir-v/vert.spv", vk::ShaderStageFlagBits::eVertex, "main" },
+		{ "src/vulkan/shaders/spir-v/frag.spv", vk::ShaderStageFlagBits::eFragment, "main" },
+	};
+	const std::vector<vk::DynamicState> m_dynamic_states{
+		vk::DynamicState::eViewport,
+		vk::DynamicState::eScissor,
 	};
 
 	glfw::Window		 m_window;
@@ -30,4 +42,7 @@ private:
 	vk::raii::SurfaceKHR m_surface;
 	vulkan::Device		 m_device;
 	vulkan::Queues		 m_queues;
+	vulkan::Swapchain	 m_swapchain;
+	vulkan::Pipeline	 m_grapics_pipeline;
+
 };

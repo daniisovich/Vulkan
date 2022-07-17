@@ -124,7 +124,7 @@ namespace vulkan {
 
 		std::unique_ptr<vk::PhysicalDeviceRayTracingPipelineFeaturesKHR> raytracing_features{ nullptr };
 		if (m_raytracing) {
-			
+
 			vk::PhysicalDeviceVulkan12Features vulkan12_features{
 				.descriptorIndexing = VK_TRUE,
 				.bufferDeviceAddress = VK_TRUE,
