@@ -24,7 +24,7 @@
     <ClCompile Include="src\glfw\init.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application.cpp">
+    <ClCompile Include="src\application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\vulkan\core\instance.cpp">
