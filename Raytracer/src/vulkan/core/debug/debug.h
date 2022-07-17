@@ -16,11 +16,13 @@ namespace {
 			const VkDebugUtilsMessengerCallbackDataEXT* p_callback_data,
 			void*										p_user_data)
 	{
-		std::cerr << vk::to_string(static_cast<vk::DebugUtilsMessageSeverityFlagBitsEXT>(severity)) << "::"
-				  << vk::to_string(static_cast<vk::DebugUtilsMessageTypeFlagBitsEXT>(type)) << "\n"
-				  << "\tName\t\t<" << p_callback_data->pMessageIdName << ">\n"
-				  << "\tID\t\t<" << p_callback_data->messageIdNumber << ">\n"
-				  << p_callback_data->pMessage << "\n\n";
+		if (!(strcmp(p_callback_data->pMessageIdName, "Loader Message") == 0)) {
+			std::cerr << vk::to_string(static_cast<vk::DebugUtilsMessageSeverityFlagBitsEXT>(severity)) << "::"
+					  << vk::to_string(static_cast<vk::DebugUtilsMessageTypeFlagBitsEXT>(type)) << "\n"
+					  << "\tName\t\t<" << p_callback_data->pMessageIdName << ">\n"
+					  << "\tID\t\t<" << p_callback_data->messageIdNumber << ">\n"
+					  << p_callback_data->pMessage << "\n\n";
+		}
 		return VK_FALSE;
 	}
 
