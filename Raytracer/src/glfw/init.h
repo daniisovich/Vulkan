@@ -15,7 +15,7 @@ namespace glfw {
 		Initializer(const Initializer&) = delete;
 		Initializer& operator=(const Initializer&) = delete;
 
-		Window createWindow(uint32_t width, uint32_t height, std::string_view title) const;
+		Window createWindow(const WindowParameter& parameter) const;
 
 	private:
 		 

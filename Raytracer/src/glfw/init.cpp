@@ -29,8 +29,8 @@ namespace glfw {
 		glfwTerminate();
 	}
 
-	Window Initializer::createWindow(uint32_t width, uint32_t height, std::string_view title) const {
-		return Window{ width, height, title };
+	Window Initializer::createWindow(const WindowParameter& parameter) const {
+		return Window{ parameter };
 	}
 
 }

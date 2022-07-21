@@ -8,12 +8,12 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 namespace glfw {
 
-	Window::Window(uint32_t width, uint32_t height, std::string_view title) {
+	Window::Window(const WindowParameter& parameter) {
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-		m_handle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
+		m_handle = glfwCreateWindow(parameter.resolution.width, parameter.resolution.height, parameter.title.data(), nullptr, nullptr);
 		if (!m_handle) {
 			throw std::runtime_error("Failed create GLFW window");
 		}
@@ -38,7 +38,7 @@ namespace glfw {
 	
 	}
 
-	std::pair<uint32_t, uint32_t> Window::framebufferSize() const {
+	Resolution Window::framebufferSize() const {
 		int width{ 0 }, height{ 0 };
 		glfwGetFramebufferSize(m_handle, &width, &height);
 		return { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };

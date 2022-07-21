@@ -6,6 +6,13 @@
 
 #include <string>
 
+#include "../common.h"
+
+
+struct WindowParameter {
+	Resolution resolution;
+	std::string_view title;
+};
 
 namespace glfw {
 
@@ -21,14 +28,14 @@ namespace glfw {
 		Window& operator=(const Window&) = delete;
 
 		vk::raii::SurfaceKHR createSurface(const vk::raii::Instance& instance);
-		std::pair<uint32_t, uint32_t> framebufferSize() const;
+		Resolution framebufferSize() const;
 
 		inline bool open() const { return !glfwWindowShouldClose(m_handle); }
 		inline void update() const { glfwPollEvents(); }
 
 	private:
 
-		Window(uint32_t width, uint32_t height, std::string_view title);
+		Window(const WindowParameter& parameter);
 		void setCallbacks();
 
 		GLFWwindow* m_handle;
