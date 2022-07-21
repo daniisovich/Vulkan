@@ -161,4 +161,8 @@ namespace vulkan {
 
 	}
 
+	vk::PhysicalDeviceRayTracingPipelinePropertiesKHR PhysicalDevice::raytracingProperties() const {
+		auto chain = m_handle.getProperties2<vk::PhysicalDeviceProperties2, vk::PhysicalDeviceRayTracingPipelinePropertiesKHR>();
+		return chain.get<vk::PhysicalDeviceRayTracingPipelinePropertiesKHR>();
+	}
 }

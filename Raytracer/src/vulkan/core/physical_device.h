@@ -32,6 +32,8 @@ namespace vulkan {
 		bool suitable() const;
 		vk::raii::Device createLogicalDevice();
 
+		vk::PhysicalDeviceRayTracingPipelinePropertiesKHR raytracingProperties() const;
+
 		inline const vk::raii::PhysicalDevice& operator*() const { return m_handle; }
 		inline QueueIndices indices() const { return m_indices; }
 		inline std::vector<const char*> extensions() const { return m_extensions; }
