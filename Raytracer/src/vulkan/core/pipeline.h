@@ -23,6 +23,8 @@ namespace vulkan {
 		Pipeline(const vk::raii::Device& device, const vulkan::Swapchain& swapchain, const std::vector<ShaderInfo>& shaders,
 				 const std::vector<vk::DynamicState>& dynamic_states);
 
+		inline const vk::raii::RenderPass& renderpass() const { return m_renderpass; }
+
 	private:
 
 		vk::raii::Pipeline createGraphicsPipeline(const vk::raii::Device& device, const vk::Extent2D& swapchain_extent, const std::vector<ShaderInfo>& shaders,
