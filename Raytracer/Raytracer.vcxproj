@@ -163,22 +163,33 @@
     <ClCompile Include="src\glfw\init.cpp" />
     <ClCompile Include="src\glfw\window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\model.cpp" />
+    <ClCompile Include="src\vulkan\core\acceleration_structure.cpp" />
+    <ClCompile Include="src\vulkan\core\command_pool.cpp" />
     <ClCompile Include="src\vulkan\core\device.cpp" />
+    <ClCompile Include="src\vulkan\core\framebuffer.cpp" />
     <ClCompile Include="src\vulkan\core\instance.cpp" />
     <ClCompile Include="src\vulkan\core\physical_device.cpp" />
     <ClCompile Include="src\vulkan\core\pipeline.cpp" />
     <ClCompile Include="src\vulkan\core\swapchain.cpp" />
+    <ClCompile Include="src\vulkan\core\vertex_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application.h" />
+    <ClInclude Include="src\common.h" />
     <ClInclude Include="src\glfw\init.h" />
     <ClInclude Include="src\glfw\window.h" />
+    <ClInclude Include="src\model.h" />
+    <ClInclude Include="src\vulkan\core\acceleration_structure.h" />
+    <ClInclude Include="src\vulkan\core\command_pool.h" />
     <ClInclude Include="src\vulkan\core\debug\debug.h" />
     <ClInclude Include="src\vulkan\core\device.h" />
+    <ClInclude Include="src\vulkan\core\framebuffer.h" />
     <ClInclude Include="src\vulkan\core\instance.h" />
     <ClInclude Include="src\vulkan\core\physical_device.h" />
     <ClInclude Include="src\vulkan\core\pipeline.h" />
     <ClInclude Include="src\vulkan\core\swapchain.h" />
+    <ClInclude Include="src\vulkan\core\vertex_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vulkan\shaders\compile.bat" />
