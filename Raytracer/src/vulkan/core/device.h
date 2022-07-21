@@ -29,8 +29,10 @@ namespace vulkan {
 
 		Queues createQueues() const;
 
+		inline void wait() const { m_logical_device.waitIdle(); }
 		inline QueueIndices indices() const { return m_physical_device.indices(); }
 		inline SwapchainSupport swapchainSupport() const { return m_physical_device.swapchainSupport(); }
+		inline vk::PhysicalDeviceMemoryProperties memoryProperties() const { return (*m_physical_device).getMemoryProperties(); }
 
 	private:
 
