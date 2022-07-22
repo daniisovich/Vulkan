@@ -7,7 +7,7 @@ Application::Application(const AppInfo& info, uint32_t width, uint32_t height) :
 	m_window{ glfw::Initializer::get().createWindow({width, height, info.name}) },
 	m_instance{ info },
 	m_surface{ m_window.createSurface(*m_instance) },
-	m_device{ m_instance.physicalDevices(), m_surface, m_device_extensions },
+	m_device{ m_instance.physicalDevices(), m_surface, m_device_extensions, m_concurrent_frames_count },
 	m_queues{ m_device.createQueues() },
 	m_swapchain{ m_device, m_surface, m_window.framebufferSize(), m_image_count },
 	m_graphics_pipeline{ *m_device, m_swapchain, m_shaders, m_dynamic_states },
@@ -22,8 +22,9 @@ void Application::run() {
 
 	while (m_window.open()) {
 
+		
+		//m_device.waitForFences(m_current_frame);
 		/*
-		m_device.waitForFences();
 		try {
 			m_device.acquireNextImage(m_swapchain);
 		}
@@ -34,8 +35,9 @@ void Application::run() {
 		catch (const vk::SystemError& err) {
 			throw std::runtime_error("Failed to acquire next swapchain image\n\t" + std::string(err.what()));
 		}
-		m_device.resetFences();
 		*/
+		//m_device.resetFences(m_current_frame);
+		
 		m_window.update();
 	}
 }
