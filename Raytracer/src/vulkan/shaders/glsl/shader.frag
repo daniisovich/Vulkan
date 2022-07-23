@@ -1,9 +1,8 @@
 #version 450
 
-layout (location = 0) in vec3 fragment_color;
 layout (location = 0) out vec4 color;
 
 
 void main() {
-	color = vec4(fragment_color, 1.0);
+	color = vec4(1.0f, 0.0f, 0.0f, 1.0);
 }
