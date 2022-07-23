@@ -1,5 +1,7 @@
 #include "vertex_buffer.h"
 
+#include "../../model.h"
+
 
 vk::raii::Buffer createBuffer(const vk::raii::Device& device, vk::DeviceSize size, vk::BufferUsageFlags usage);
 uint32_t findMemoryType(const vulkan::Device& device, uint32_t filter, const vk::MemoryPropertyFlags properties);
@@ -7,7 +9,7 @@ uint32_t findMemoryType(const vulkan::Device& device, uint32_t filter, const vk:
 
 namespace vulkan {
 
-	VertexBuffer::VertexBuffer(const vulkan::Device& device, const std::vector<glm::vec3>& vertices, 
+	VertexBuffer::VertexBuffer(const vulkan::Device& device, const std::vector<Vertex>& vertices, 
 							   vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties) :
 		m_handle{ createBuffer(*device, static_cast<vk::DeviceSize>(sizeof(glm::vec3) * vertices.size()), usage)},
 		m_memory{ allocateMemory(device, vertices, properties) }
@@ -15,7 +17,7 @@ namespace vulkan {
 		bindMemory(vertices, 0);
 	}
 
-	vk::raii::DeviceMemory VertexBuffer::allocateMemory(const vulkan::Device& device, const std::vector<glm::vec3>& vertices, vk::MemoryPropertyFlags properties) {
+	vk::raii::DeviceMemory VertexBuffer::allocateMemory(const vulkan::Device& device, const std::vector<Vertex>& vertices, vk::MemoryPropertyFlags properties) {
 
 		const vk::MemoryRequirements requirements{ m_handle.getMemoryRequirements() };
 		const uint32_t type{ findMemoryType(device, requirements.memoryTypeBits, properties) };
@@ -33,7 +35,7 @@ namespace vulkan {
 
 	}
 
-	void VertexBuffer::bindMemory(const std::vector<glm::vec3>& vertices, const vk::DeviceSize offset) {
+	void VertexBuffer::bindMemory(const std::vector<Vertex>& vertices, const vk::DeviceSize offset) {
 
 		try {
 			m_handle.bindMemory(*m_memory, offset);

@@ -7,6 +7,8 @@
 
 #include "device.h"
 
+struct Vertex;
+
 
 namespace vulkan {
 
@@ -14,13 +16,15 @@ namespace vulkan {
 
 	public:
 
-		VertexBuffer(const vulkan::Device& device, const std::vector<glm::vec3>& vertices,
+		VertexBuffer(const vulkan::Device& device, const std::vector<Vertex>& vertices,
 				     vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties);
+
+		inline const vk::raii::Buffer& buffer() const { return m_handle; }
 
 	private:
 
-		vk::raii::DeviceMemory allocateMemory(const vulkan::Device& device, const std::vector<glm::vec3>& vertices, vk::MemoryPropertyFlags properties);
-		void bindMemory(const std::vector<glm::vec3>& vertices, const vk::DeviceSize offset);
+		vk::raii::DeviceMemory allocateMemory(const vulkan::Device& device, const std::vector<Vertex>& vertices, vk::MemoryPropertyFlags properties);
+		void bindMemory(const std::vector<Vertex>& vertices, const vk::DeviceSize offset);
 
 		vk::raii::Buffer m_handle;
 		vk::raii::DeviceMemory m_memory;
