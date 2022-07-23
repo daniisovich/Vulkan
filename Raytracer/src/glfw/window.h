@@ -33,11 +33,15 @@ namespace glfw {
 		inline bool open() const { return !glfwWindowShouldClose(m_handle); }
 		inline void update() const { glfwPollEvents(); }
 
+		inline bool resized() const { return m_resized; }
+		inline void setResized(bool value) { m_resized = value; }
+
 	private:
 
 		Window(const WindowParameter& parameter);
 		void setCallbacks();
 
+		bool m_resized{ false };
 		GLFWwindow* m_handle;
 
 		friend class Initializer;
